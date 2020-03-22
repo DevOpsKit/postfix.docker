@@ -28,4 +28,5 @@ for argument; do
 done
 
 # postfix start returns code 0 and the container exits, next line is to keep the process running.
-exec postfix start && tail -f /dev/null
+postfix start 
+tail -f /dev/null
