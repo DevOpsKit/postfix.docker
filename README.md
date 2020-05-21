@@ -1,2 +1,2 @@
 # postfix.docker
-:snowflake: Alpine based dnsmasq image. Configurable from dnsmasq command options.
+Alpine based postfix image. Configurable from postconf command options.
