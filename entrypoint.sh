@@ -1,22 +1,19 @@
-#!/bin/bash
-
-set -o pipefail
+#!/bin/bash -x
 
 LC_ALL=C
 LANG=C
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 export LC_ALL LANG PATH
 
-declare -r POSTFIX_CONF=/data/main.cf
-declare -r config_file=/etc/postfix/main.cf
+declare -r POSTFIX_CONF=/data
+declare -r config_dir=/etc/postfix
 declare -r key_value_pair_regex="[^]+=[^]+"
 
 # if volume with config, use it
-if [ -f "${POSTFIX_CONF}" ];
-then \
-    rm -f /etc/main.cf
-    ln -s "${POSTFIX_CONF}" /etc/main.cf
-fi
+for file in "$(ls -A  $POSTFIX_CONF)"; do
+    cp $POSTFIX_CONF/$file $config_dir
+    postmap $config_dir/$file
+done
 
 # set config through commands
 for argument; do
