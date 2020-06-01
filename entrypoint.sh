@@ -1,21 +1,23 @@
-#!/bin/bash -x
-
-LC_ALL=C
-LANG=C
-PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
-export LC_ALL LANG PATH
+#!/bin/bash
 
 declare -r config_dir=/data
+declare -r POSTFIX_CONF=$config_dir/main.cf
+declare -r config_file=/etc/postfix/main.cf
 declare -r key_value_pair_regex="[^]+=[^]+"
 
 # if volume with config, use it
+if [ -f "${POSTFIX_CONF}" ];
+then \
+    rm -f /etc/main.cf
+    ln -s "${POSTFIX_CONF}" /etc/main.cf
+fi
 
 for file in $config_dir/*; do
-    cp -r $file /etc/postfix
     file_name="$(basename -- $file)"
-    [ $file_name != "main.cf" ] && postmap /etc/postfix/$file_name
-done    
+    [ $file_name != "main.cf" ] && cp -r $file /etc/postfix &&  postmap /etc/postfix/$file_name
+done
 
+ls /etc/postfix
 # set config through commands
 for argument; do
     if [[ $argument =~ $key_value_pair_regex ]]; then
