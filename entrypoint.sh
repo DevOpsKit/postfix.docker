@@ -17,7 +17,6 @@ for file in $config_dir/*; do
     [ $file_name != "main.cf" ] && cp -r $file /etc/postfix &&  postmap /etc/postfix/$file_name
 done
 
-ls /etc/postfix
 # set config through commands
 for argument; do
     if [[ $argument =~ $key_value_pair_regex ]]; then
